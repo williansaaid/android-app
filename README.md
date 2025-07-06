@@ -1,5 +1,10 @@
 # MovieNow
 
+<img
+  src="https://res.cloudinary.com/ds41xxspf/image/upload/v1751826457/Cell-Solutions/icon_rpnfl2.png"
+  style="display: block; margin: 0 auto; width: 200px; height: 200px;"
+/>
+
 ## Descripción del Proyecto
 
 "MovieNow" es una aplicación que permite a los usuarios explorar películas populares, de estreno y mejor valoradas, a través de la API pública de The Movie DB (TMDb).
@@ -24,6 +29,16 @@ Android
 
 Aquí están los diversos wireframes de la aplicación:
 
-| Pantalla Principal (Home)                                                                 | Pantalla de Búsqueda                                                                          | Detalle de Película                                                                          |
-| ----------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------- |
-| ![Wireframe Home](https://web.itsjba.edu.ec/wp-content/uploads/2024/06/placeholder-1.png) | ![Wireframe Búsqueda](https://web.itsjba.edu.ec/wp-content/uploads/2024/06/placeholder-1.png) | ![Wireframe Detalle](https://web.itsjba.edu.ec/wp-content/uploads/2024/06/placeholder-1.png) |
+| Pantalla Principal (Home) | Pantalla de Búsqueda | Detalle de Película |
+| ------------------------- | -------------------- | ------------------- |
+
+| <img
+  src="https://res.cloudinary.com/ds41xxspf/image/upload/v1751826835/Cell-Solutions/f479ef9e-cf6e-43b3-bfa7-21bbf025b63b.png"
+  style="height: 500px;"
+/> | <img
+  src="https://res.cloudinary.com/ds41xxspf/image/upload/v1751827351/Cell-Solutions/cfc6f947-f5d8-470a-b05f-3f19a2a301b3.png"
+  style="height: 500px;"
+/> | <img
+  src="https://res.cloudinary.com/ds41xxspf/image/upload/v1751827432/Cell-Solutions/60cf819c-af66-4325-a1d4-8bc206cec3e7.png"
+  style="height: 500px;"
+/>|
