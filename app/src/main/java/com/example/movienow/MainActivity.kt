@@ -1,47 +1,45 @@
 package com.example.movienow
 
 import android.os.Bundle
-import androidx.activity.ComponentActivity
-import androidx.activity.compose.setContent
-import androidx.activity.enableEdgeToEdge
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
-import com.example.movienow.ui.theme.MovieNowTheme
+import android.view.View
+import androidx.appcompat.app.AppCompatActivity
+import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
+import androidx.navigation.fragment.NavHostFragment
+import androidx.navigation.ui.setupWithNavController
+import com.example.movienow.databinding.ActivityMainBinding
 
-class MainActivity : ComponentActivity() {
+class MainActivity : AppCompatActivity() {
+
+    private lateinit var binding: ActivityMainBinding
+
     override fun onCreate(savedInstanceState: Bundle?) {
+        // Llama a installSplashScreen() ANTES de super.onCreate()
+        installSplashScreen()
+
         super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
-        setContent {
-            MovieNowTheme {
-                Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    Greeting(
-                        name = "Android",
-                        modifier = Modifier.padding(innerPadding)
-                    )
+        binding = ActivityMainBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+
+        val navHostFragment = supportFragmentManager
+            .findFragmentById(R.id.nav_host_fragment) as NavHostFragment
+        val navController = navHostFragment.navController
+
+        // Conectar el NavController con la BottomNavigationView
+        binding.bottomNavigation.setupWithNavController(navController)
+
+        // --- Lógica para mostrar/ocultar la barra de navegación ---
+        navController.addOnDestinationChangedListener { _, destination, _ ->
+            when (destination.id) {
+                // En estas pantallas, la barra SÍ es visible
+                R.id.homeFragment,
+                R.id.searchFragment -> {
+                    binding.bottomNavigation.visibility = View.VISIBLE
+                }
+                // En todas las demás (como la de detalle), se oculta
+                else -> {
+                    binding.bottomNavigation.visibility = View.GONE
                 }
             }
         }
-    }
-}
-
-@Composable
-fun Greeting(name: String, modifier: Modifier = Modifier) {
-    Text(
-        text = "Hello $name!",
-        modifier = modifier
-    )
-}
-
-@Preview(showBackground = true)
-@Composable
-fun GreetingPreview() {
-    MovieNowTheme {
-        Greeting("Android")
     }
 }
