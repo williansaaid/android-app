@@ -66,4 +66,17 @@ class MovieRepository {
             null
         }
     }
+
+    suspend fun getMovieDetails(movieId: Int): Movie? {
+        return try {
+            val response = apiService.getMovieDetails(movieId = movieId, apiKey = Constants.API_KEY)
+            if (response.isSuccessful) {
+                response.body()
+            } else {
+                null
+            }
+        } catch (e: Exception) {
+            null
+        }
+    }
 }

@@ -9,16 +9,27 @@ import com.example.movienow.databinding.ItemMovieBinding
 import com.example.movienow.util.Constants
 
 class MovieAdapter(
-    private var movies: List<Movie>
+    private var movies: List<Movie>,
+    // 1. Añadimos un parámetro para el listener del clic
+    private val onItemClicked: (Movie) -> Unit
 ) : RecyclerView.Adapter<MovieAdapter.ViewHolder>() {
 
-    // Inner class for the ViewHolder
-    class ViewHolder(val binding: ItemMovieBinding) : RecyclerView.ViewHolder(binding.root) {
+    // El ViewHolder ahora también necesita el listener
+    inner class ViewHolder(val binding: ItemMovieBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bind(movie: Movie) {
             val imageUrl = Constants.IMAGE_BASE_URL + movie.posterPath
             Glide.with(binding.root.context)
                 .load(imageUrl)
                 .into(binding.moviePosterImageView)
+
+            binding.movieTitleTextView.text = movie.title
+            // Extraemos el año de la fecha de estreno
+            binding.movieYearTextView.text = movie.releaseDate.substringBefore("-")
+
+            // 2. Configuramos el clic en el item completo
+            itemView.setOnClickListener {
+                onItemClicked(movie)
+            }
         }
     }
 
@@ -35,9 +46,8 @@ class MovieAdapter(
         return movies.size
     }
 
-    // Helper function to update the data in the adapter
     fun updateData(newMovies: List<Movie>) {
         this.movies = newMovies
-        notifyDataSetChanged() // Refreshes the list
+        notifyDataSetChanged()
     }
 }

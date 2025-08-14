@@ -2,6 +2,8 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
+    id("kotlin-parcelize")
+    id("androidx.navigation.safeargs.kotlin")
 }
 
 android {
@@ -76,6 +78,10 @@ dependencies {
     implementation("androidx.constraintlayout:constraintlayout:2.1.4")
     implementation("androidx.swiperefreshlayout:swiperefreshlayout:1.1.0") // For "pull to refresh"
 
+    // --- Navigation Component ---
+    implementation("androidx.navigation:navigation-fragment-ktx:2.7.7")
+    implementation("androidx.navigation:navigation-ui-ktx:2.7.7")
+
     // --- Architecture Components (MVVM) ---
     // ViewModel: Manages UI-related data in a lifecycle-conscious way
     implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.7.0")
@@ -86,6 +92,8 @@ dependencies {
     // Activity KTX: Provides Kotlin extensions for activities
     implementation("androidx.activity:activity-ktx:1.8.2")
 
+    // Splash Screen API ---
+    implementation("androidx.core:core-splashscreen:1.0.1")
 
     // --- Networking (Retrofit) ---
     // Retrofit: A type-safe HTTP client for Android and Java

@@ -15,4 +15,18 @@
     <color name="md_theme_onTertiary">#4A453E</color> <!-- Texto sobre el color de acento -->
     <color name="md_theme_onBackground">#1C1B1A</color> <!-- Texto sobre el fondo -->
     <color name="md_theme_onSurface">#1C1B1A</color> <!-- Texto sobre las superficies -->
+
+    <color name="splash_background">#FDF8F3</color> <!-- Fondo crema para modo claro -->
+
+    <!-- Paleta de colores para el Modo Oscuro -->
+    <color name="md_theme_dark_primary">#92C8EA</color>
+    <color name="md_theme_dark_secondary">#B4C9D9</color>
+    <color name="md_theme_dark_tertiary">#E2C3A2</color>
+    <color name="md_theme_dark_background">#1A1C1E</color>
+    <color name="md_theme_dark_surface">#1A1C1E</color>
+    <color name="md_theme_dark_onPrimary">#00344B</color>
+    <color name="md_theme_dark_onSecondary">#24323B</color>
+    <color name="md_theme_dark_onTertiary">#452D0F</color>
+    <color name="md_theme_dark_onBackground">#E2E2E5</color>
+    <color name="md_theme_dark_onSurface">#E2E2E5</color>
 </resources>
