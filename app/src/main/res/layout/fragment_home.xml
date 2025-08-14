@@ -46,7 +46,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="24dp"
-                android:text="Mejor Valoradas"
+                android:text="Aclamadas Por La Crítica"
                 android:textSize="24sp"
                 android:textStyle="bold"
                 android:textColor="?android:attr/textColorPrimary" />

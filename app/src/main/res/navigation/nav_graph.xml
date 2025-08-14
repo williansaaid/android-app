@@ -38,9 +38,10 @@
         android:name="com.example.movienow.ui.detail.DetailFragment"
         android:label="fragment_detail"
         tools:layout="@layout/fragment_detail">
+        <!-- Cambiamos el argumento a un entero para el ID de la película -->
         <argument
-            android:name="movie"
-            app:argType="com.example.movienow.data.model.Movie" />
+            android:name="movieId"
+            app:argType="integer" />
     </fragment>
 
 </navigation>

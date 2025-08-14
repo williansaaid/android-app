@@ -6,8 +6,11 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.viewModels
+import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import com.example.movienow.MainViewModel
 import com.example.movienow.data.model.Movie
 import com.example.movienow.databinding.FragmentHomeBinding
 
@@ -16,7 +19,7 @@ class HomeFragment : Fragment() {
     private var _binding: FragmentHomeBinding? = null
     private val binding get() = _binding!!
 
-    private val viewModel: HomeViewModel by viewModels()
+    private val viewModel: MainViewModel by activityViewModels()
 
     private lateinit var popularAdapter: MovieAdapter
     private lateinit var topRatedAdapter: MovieAdapter
@@ -38,16 +41,45 @@ class HomeFragment : Fragment() {
     }
 
     private fun setupRecyclerViews() {
-        // Pass the navigation function to the adapter
-        popularAdapter = MovieAdapter(emptyList()) { movie ->
+        popularAdapter = MovieAdapter(mutableListOf()) { movie ->
             navigateToDetail(movie)
         }
-        topRatedAdapter = MovieAdapter(emptyList()) { movie ->
+        topRatedAdapter = MovieAdapter(mutableListOf()) { movie ->
             navigateToDetail(movie)
         }
 
         binding.popularMoviesRecyclerView.adapter = popularAdapter
         binding.topRatedMoviesRecyclerView.adapter = topRatedAdapter
+
+        // Listener para el scroll infinito de películas populares
+        binding.popularMoviesRecyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                super.onScrolled(recyclerView, dx, dy)
+                val layoutManager = recyclerView.layoutManager as LinearLayoutManager
+                val visibleItemCount = layoutManager.childCount
+                val totalItemCount = layoutManager.itemCount
+                val firstVisibleItemPosition = layoutManager.findFirstVisibleItemPosition()
+
+                if (!viewModel.isFetchingPopular && (visibleItemCount + firstVisibleItemPosition) >= totalItemCount && firstVisibleItemPosition >= 0) {
+                    viewModel.loadMorePopularMovies()
+                }
+            }
+        })
+
+        // Listener para el scroll infinito de películas mejor valoradas
+        binding.topRatedMoviesRecyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                super.onScrolled(recyclerView, dx, dy)
+                val layoutManager = recyclerView.layoutManager as LinearLayoutManager
+                val visibleItemCount = layoutManager.childCount
+                val totalItemCount = layoutManager.itemCount
+                val firstVisibleItemPosition = layoutManager.findFirstVisibleItemPosition()
+
+                if (!viewModel.isFetchingTopRated && (visibleItemCount + firstVisibleItemPosition) >= totalItemCount && firstVisibleItemPosition >= 0) {
+                    viewModel.loadMoreTopRatedMovies()
+                }
+            }
+        })
     }
 
     private fun observeViewModel() {
@@ -61,8 +93,7 @@ class HomeFragment : Fragment() {
     }
 
     private fun navigateToDetail(movie: Movie) {
-        // Use the action defined in nav_graph.xml to navigate
-        val action = HomeFragmentDirections.actionHomeFragmentToDetailFragment(movie)
+        val action = HomeFragmentDirections.actionHomeFragmentToDetailFragment(movie.id)
         findNavController().navigate(action)
     }
 
