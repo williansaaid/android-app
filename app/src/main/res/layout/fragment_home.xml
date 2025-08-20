@@ -8,7 +8,6 @@
     android:fitsSystemWindows="true"
     tools:context=".ui.home.HomeFragment">
 
-    <!-- Incluimos nuestra barra de herramientas personalizada -->
     <include
         android:id="@+id/main_toolbar"
         layout="@layout/toolbar_main" />
@@ -24,10 +23,27 @@
             android:orientation="vertical"
             android:padding="16dp">
 
-            <!-- El resto de tu contenido (TextViews y RecyclerViews) va aquí sin cambios -->
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:text="Estrenos"
+                android:textSize="24sp"
+                android:textStyle="bold"
+                android:textColor="?android:attr/textColorPrimary" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/nowPlayingMoviesRecyclerView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:orientation="horizontal"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                tools:listitem="@layout/item_movie" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
                 android:text="Populares"
                 android:textSize="24sp"
                 android:textStyle="bold"
@@ -46,7 +62,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="24dp"
-                android:text="Aclamadas Por La Crítica"
+                android:text="Aclamadas por la Crítica"
                 android:textSize="24sp"
                 android:textStyle="bold"
                 android:textColor="?android:attr/textColorPrimary" />

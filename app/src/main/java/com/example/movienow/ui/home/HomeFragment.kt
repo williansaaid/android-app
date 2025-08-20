@@ -23,6 +23,7 @@ class HomeFragment : Fragment() {
 
     private lateinit var popularAdapter: MovieAdapter
     private lateinit var topRatedAdapter: MovieAdapter
+    private lateinit var nowPlayingAdapter: MovieAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -35,65 +36,56 @@ class HomeFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         (activity as? AppCompatActivity)?.setSupportActionBar(binding.mainToolbar.toolbar)
+        (activity as? AppCompatActivity)?.supportActionBar?.title = ""
 
         setupRecyclerViews()
         observeViewModel()
     }
 
     private fun setupRecyclerViews() {
-        popularAdapter = MovieAdapter(mutableListOf()) { movie ->
-            navigateToDetail(movie)
-        }
-        topRatedAdapter = MovieAdapter(mutableListOf()) { movie ->
-            navigateToDetail(movie)
-        }
+        popularAdapter = MovieAdapter(mutableListOf()) { movie -> navigateToDetail(movie) }
+        topRatedAdapter = MovieAdapter(mutableListOf()) { movie -> navigateToDetail(movie) }
+        nowPlayingAdapter = MovieAdapter(mutableListOf()) { movie -> navigateToDetail(movie) }
 
         binding.popularMoviesRecyclerView.adapter = popularAdapter
         binding.topRatedMoviesRecyclerView.adapter = topRatedAdapter
+        binding.nowPlayingMoviesRecyclerView.adapter = nowPlayingAdapter
 
-        // Listener para el scroll infinito de películas populares
-        binding.popularMoviesRecyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
-            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
-                super.onScrolled(recyclerView, dx, dy)
-                val layoutManager = recyclerView.layoutManager as LinearLayoutManager
-                val visibleItemCount = layoutManager.childCount
-                val totalItemCount = layoutManager.itemCount
-                val firstVisibleItemPosition = layoutManager.findFirstVisibleItemPosition()
-
-                if (!viewModel.isFetchingPopular && (visibleItemCount + firstVisibleItemPosition) >= totalItemCount && firstVisibleItemPosition >= 0) {
-                    viewModel.loadMorePopularMovies()
-                }
-            }
-        })
-
-        // Listener para el scroll infinito de películas mejor valoradas
-        binding.topRatedMoviesRecyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
-            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
-                super.onScrolled(recyclerView, dx, dy)
-                val layoutManager = recyclerView.layoutManager as LinearLayoutManager
-                val visibleItemCount = layoutManager.childCount
-                val totalItemCount = layoutManager.itemCount
-                val firstVisibleItemPosition = layoutManager.findFirstVisibleItemPosition()
-
-                if (!viewModel.isFetchingTopRated && (visibleItemCount + firstVisibleItemPosition) >= totalItemCount && firstVisibleItemPosition >= 0) {
-                    viewModel.loadMoreTopRatedMovies()
-                }
-            }
-        })
+        addInfiniteScrollListener(binding.popularMoviesRecyclerView) { viewModel.loadMorePopularMovies() }
+        addInfiniteScrollListener(binding.topRatedMoviesRecyclerView) { viewModel.loadMoreTopRatedMovies() }
+        addInfiniteScrollListener(binding.nowPlayingMoviesRecyclerView) { viewModel.loadMoreNowPlayingMovies() }
     }
 
     private fun observeViewModel() {
         viewModel.popularMovies.observe(viewLifecycleOwner) { movies ->
             popularAdapter.updateData(movies)
         }
-
         viewModel.topRatedMovies.observe(viewLifecycleOwner) { movies ->
             topRatedAdapter.updateData(movies)
         }
+        viewModel.nowPlayingMovies.observe(viewLifecycleOwner) { movies ->
+            nowPlayingAdapter.updateData(movies)
+        }
+    }
+
+    private fun addInfiniteScrollListener(recyclerView: RecyclerView, loadMore: () -> Unit) {
+        recyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                super.onScrolled(recyclerView, dx, dy)
+                val layoutManager = recyclerView.layoutManager as LinearLayoutManager
+                val visibleItemCount = layoutManager.childCount
+                val totalItemCount = layoutManager.itemCount
+                val firstVisibleItemPosition = layoutManager.findFirstVisibleItemPosition()
+
+                if ((visibleItemCount + firstVisibleItemPosition) >= totalItemCount && firstVisibleItemPosition >= 0) {
+                    loadMore()
+                }
+            }
+        })
     }
 
     private fun navigateToDetail(movie: Movie) {
-        val action = HomeFragmentDirections.actionHomeFragmentToDetailFragment(movie.id)
+        val action = HomeFragmentDirections.actionHomeFragmentToDetailFragment(movie)
         findNavController().navigate(action)
     }
 

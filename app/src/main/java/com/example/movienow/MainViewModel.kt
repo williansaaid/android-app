@@ -23,10 +23,16 @@ class MainViewModel : ViewModel() {
     private val _topRatedMovies = MutableLiveData<List<Movie>>()
     val topRatedMovies: LiveData<List<Movie>> = _topRatedMovies
 
+    private val _nowPlayingMovies = MutableLiveData<List<Movie>>()
+    val nowPlayingMovies: LiveData<List<Movie>> = _nowPlayingMovies
+
     private var popularMoviesPage = 1
     private var topRatedMoviesPage = 1
+    private var nowPlayingMoviesPage = 1
+
     var isFetchingPopular = false
     var isFetchingTopRated = false
+    var isFetchingNowPlaying = false
 
     init {
         fetchInitialData()
@@ -36,9 +42,11 @@ class MainViewModel : ViewModel() {
         viewModelScope.launch {
             val popular = repository.getPopularMovies(page = popularMoviesPage)
             val topRated = repository.getTopRatedMovies(page = topRatedMoviesPage)
+            val nowPlaying = repository.getNowPlayingMovies(page = nowPlayingMoviesPage)
 
             _popularMovies.postValue(popular ?: emptyList())
             _topRatedMovies.postValue(topRated ?: emptyList())
+            _nowPlayingMovies.postValue(nowPlaying ?: emptyList())
 
             _isReady.value = true
         }
@@ -69,6 +77,20 @@ class MainViewModel : ViewModel() {
                 _topRatedMovies.postValue(currentMovies + newMovies)
             }
             isFetchingTopRated = false
+        }
+    }
+
+    fun loadMoreNowPlayingMovies() {
+        if (isFetchingNowPlaying) return
+        viewModelScope.launch {
+            isFetchingNowPlaying = true
+            nowPlayingMoviesPage++
+            val newMovies = repository.getNowPlayingMovies(page = nowPlayingMoviesPage)
+            if (!newMovies.isNullOrEmpty()) {
+                val currentMovies = _nowPlayingMovies.value ?: emptyList()
+                _nowPlayingMovies.postValue(currentMovies + newMovies)
+            }
+            isFetchingNowPlaying = false
         }
     }
 }

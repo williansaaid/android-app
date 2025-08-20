@@ -81,7 +81,7 @@ class SearchFragment : Fragment() {
     }
 
     private fun navigateToDetail(movie: Movie) {
-        val action = SearchFragmentDirections.actionSearchFragmentToDetailFragment(movie.id)
+        val action = SearchFragmentDirections.actionSearchFragmentToDetailFragment(movie)
         findNavController().navigate(action)
     }
 

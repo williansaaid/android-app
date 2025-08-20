@@ -1,178 +1,364 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     android:background="?attr/colorSurface"
     tools:context=".ui.detail.DetailFragment">
 
-    <!-- 1. Contenedor de la imagen de fondo -->
-    <FrameLayout
-        android:id="@+id/header_container"
-        android:layout_width="0dp"
-        android:layout_height="280dp"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent">
-
-        <ImageView
-            android:id="@+id/backdropImageView"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:scaleType="centerCrop"
-            tools:src="@tools:sample/backgrounds/scenic" />
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@drawable/gradient_overlay" />
-
-    </FrameLayout>
-
-    <!-- 2. Toolbar flotante que respeta la barra de estado -->
-    <androidx.appcompat.widget.Toolbar
-        android:id="@+id/detail_toolbar"
-        android:layout_width="0dp"
+    <!-- 1. Toolbar estándar -->
+    <com.google.android.material.appbar.AppBarLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:minHeight="?attr/actionBarSize"
-        android:background="@android:color/transparent"
-        android:fitsSystemWindows="true"
-        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
+        app:elevation="0dp">
 
-    <!-- 3. Contenido con scroll -->
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/detail_toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="?attr/colorSurface"
+            app:navigationIconTint="?attr/colorOnSurface"
+            app:titleTextColor="?attr/colorOnSurface"
+            app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
+
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <!-- 2. Contenido con scroll -->
     <androidx.core.widget.NestedScrollView
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        app:layout_constraintTop_toBottomOf="@id/header_container"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent">
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:paddingBottom="16dp">
 
-            <!-- Espacio para el póster y el título -->
-            <View
-                android:id="@+id/header_content_space"
-                android:layout_width="0dp"
-                android:layout_height="80dp"
-                app:layout_constraintTop_toTopOf="parent"
+            <!-- Póster en la parte superior (siempre visible) -->
+            <com.google.android.material.imageview.ShapeableImageView
+                android:id="@+id/posterImageView"
+                android:layout_width="180dp"
+                android:layout_height="270dp"
+                android:layout_marginTop="24dp"
+                android:elevation="8dp"
+                android:scaleType="centerCrop"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"/>
+                app:layout_constraintTop_toTopOf="parent"
+                app:shapeAppearanceOverlay="@style/ShapeAppearance.Material3.Corner.Large"
+                tools:src="@tools:sample/avatars" />
 
+            <!-- Título (siempre visible) -->
             <TextView
                 android:id="@+id/titleTextView"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="152dp"
-                android:layout_marginEnd="16dp"
-                android:textColor="?attr/colorOnSurface"
-                android:textSize="22sp"
-                android:textStyle="bold"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="@id/header_content_space"
-                tools:text="Título de la Película Muy Largo para Probar" />
-
-            <ImageView
-                android:id="@+id/starIcon"
-                android:layout_width="16dp"
-                android:layout_height="16dp"
-                android:layout_marginTop="8dp"
-                android:src="@drawable/ic_star"
-                app:layout_constraintStart_toStartOf="@id/titleTextView"
-                app:layout_constraintTop_toBottomOf="@id/titleTextView"
-                app:tint="?attr/colorTertiary" />
-
-            <TextView
-                android:id="@+id/ratingTextView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="4dp"
-                android:textColor="?attr/colorOnSurface"
-                android:textStyle="bold"
-                app:layout_constraintBottom_toBottomOf="@id/starIcon"
-                app:layout_constraintStart_toEndOf="@id/starIcon"
-                app:layout_constraintTop_toTopOf="@id/starIcon"
-                tools:text="8.5 / 10" />
-
-            <!-- Resto del contenido -->
-            <TextView
-                android:id="@+id/overviewTitleTextView"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="24dp"
-                android:layout_marginStart="16dp"
-                android:layout_marginEnd="16dp"
-                android:text="Sinopsis"
-                android:textColor="?attr/colorOnSurface"
-                android:textSize="18sp"
-                android:textStyle="bold"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/header_content_space" />
-
-            <TextView
-                android:id="@+id/overviewTextView"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:layout_marginStart="16dp"
-                android:layout_marginEnd="16dp"
-                android:textColor="?attr/colorOnSurface"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/overviewTitleTextView"
-                tools:text="Aquí va la descripción completa de la película." />
-
-            <TextView
-                android:id="@+id/genresTitleTextView"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_marginStart="24dp"
                 android:layout_marginTop="16dp"
-                android:layout_marginStart="16dp"
-                android:layout_marginEnd="16dp"
-                android:text="Géneros"
+                android:layout_marginEnd="24dp"
+                android:gravity="center"
                 android:textColor="?attr/colorOnSurface"
-                android:textSize="18sp"
+                android:textSize="24sp"
                 android:textStyle="bold"
-                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/overviewTextView" />
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/posterImageView"
+                tools:text="Título de la Película" />
 
-            <com.google.android.material.chip.ChipGroup
-                android:id="@+id/genresChipGroup"
+            <!-- Contenedor del Shimmer (esqueleto) -->
+            <com.facebook.shimmer.ShimmerFrameLayout
+                android:id="@+id/shimmer_container"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:layout_marginStart="16dp"
-                android:layout_marginEnd="16dp"
-                app:layout_constraintEnd_toEndOf="parent"
+                android:layout_marginTop="4dp"
+                app:shimmer_duration="1500"
+                app:layout_constraintTop_toBottomOf="@id/titleTextView"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/genresTitleTextView" />
+                app:layout_constraintEnd_toEndOf="parent">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+                    <!-- Placeholders que imitan la UI real con el nuevo estilo -->
+                    <View
+                        android:layout_width="250dp"
+                        android:layout_height="14dp"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_marginTop="4dp"
+                        android:background="@drawable/shimmer_placeholder_background"
+                        android:backgroundTint="?attr/colorSurfaceContainerHigh"/>
+                    <View
+                        android:layout_width="200dp"
+                        android:layout_height="16dp"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_marginTop="12dp"
+                        android:background="@drawable/shimmer_placeholder_background"
+                        android:backgroundTint="?attr/colorSurfaceContainerHigh"/>
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="25dp"
+                        android:layout_marginTop="24dp"
+                        android:layout_marginStart="16dp"
+                        android:layout_marginEnd="16dp"
+                        android:background="@drawable/shimmer_placeholder_background"
+                        android:backgroundTint="?attr/colorSurfaceContainerHigh"/>
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="150dp"
+                        android:layout_marginTop="8dp"
+                        android:layout_marginStart="16dp"
+                        android:layout_marginEnd="16dp"
+                        android:background="@drawable/shimmer_placeholder_background"
+                        android:backgroundTint="?attr/colorSurfaceContainerHigh"/>
+                </LinearLayout>
+            </com.facebook.shimmer.ShimmerFrameLayout>
+
+            <!-- Contenedor del contenido real (inicialmente invisible) -->
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/real_content_container"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:visibility="invisible"
+                app:layout_constraintTop_toBottomOf="@id/titleTextView"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                tools:visibility="visible">
+
+                <!-- Lema, Metadatos, Sinopsis, etc. van aquí -->
+                <TextView
+                    android:id="@+id/taglineTextView"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="24dp"
+                    android:layout_marginTop="4dp"
+                    android:layout_marginEnd="24dp"
+                    android:alpha="0.8"
+                    android:gravity="center"
+                    android:textColor="?attr/colorOnSurface"
+                    android:textSize="14sp"
+                    android:textStyle="italic"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:text="Una aventura épica a través del tiempo." />
+
+                <LinearLayout
+                    android:id="@+id/metadata_container"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="12dp"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/taglineTextView">
+                    <!-- Contenido de metadatos -->
+                    <ImageView
+                        android:id="@+id/starIcon"
+                        android:layout_width="16dp"
+                        android:layout_height="16dp"
+                        android:src="@drawable/ic_star"
+                        app:tint="?attr/colorTertiary" />
+                    <TextView
+                        android:id="@+id/ratingTextView"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="4dp"
+                        android:textColor="?attr/colorOnSurface"
+                        android:textStyle="bold"
+                        tools:text="8.5" />
+                    <TextView
+                        android:id="@+id/releaseDateTextView"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="16dp"
+                        android:textColor="?attr/colorOnSurface"
+                        tools:text="• 2024" />
+                    <TextView
+                        android:id="@+id/runtimeTextView"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="16dp"
+                        android:textColor="?attr/colorOnSurface"
+                        tools:text="• 2h 15m" />
+                </LinearLayout>
+
+                <!-- Resto de las vistas (Sinopsis, Galería, etc.) -->
+                <TextView
+                    android:id="@+id/overviewTitleTextView"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="24dp"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginEnd="16dp"
+                    android:text="Sinopsis"
+                    android:textColor="?attr/colorOnSurface"
+                    android:textSize="18sp"
+                    android:textStyle="bold"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/metadata_container" />
+
+                <TextView
+                    android:id="@+id/overviewTextView"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginEnd="16dp"
+                    android:textColor="?attr/colorOnSurface"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/overviewTitleTextView"
+                    tools:text="Aquí va la descripción completa de la película." />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/trailer_button"
+                    style="@style/Widget.Material3.Button.OutlinedButton"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginEnd="16dp"
+                    android:text="Ver Tráiler"
+                    android:visibility="gone"
+                    app:icon="@drawable/ic_play_arrow"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/overviewTextView"
+                    tools:visibility="visible"/>
+
+                <TextView
+                    android:id="@+id/genresTitleTextView"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginEnd="16dp"
+                    android:text="Géneros"
+                    android:textColor="?attr/colorOnSurface"
+                    android:textSize="18sp"
+                    android:textStyle="bold"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/trailer_button" />
+
+                <com.google.android.material.chip.ChipGroup
+                    android:id="@+id/genresChipGroup"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginEnd="16dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/genresTitleTextView" />
+
+                <TextView
+                    android:id="@+id/directorTitleTextView"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginEnd="16dp"
+                    android:text="Director"
+                    android:textColor="?attr/colorOnSurface"
+                    android:textSize="18sp"
+                    android:textStyle="bold"
+                    android:visibility="gone"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/genresChipGroup"
+                    tools:visibility="visible"/>
+
+                <TextView
+                    android:id="@+id/directorNameTextView"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginEnd="16dp"
+                    android:textColor="?attr/colorOnSurface"
+                    android:textSize="16sp"
+                    android:visibility="gone"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/directorTitleTextView"
+                    tools:text="Christopher Nolan"
+                    tools:visibility="visible"/>
+
+                <TextView
+                    android:id="@+id/castTitleTextView"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginEnd="16dp"
+                    android:text="Elenco Principal"
+                    android:textColor="?attr/colorOnSurface"
+                    android:textSize="18sp"
+                    android:textStyle="bold"
+                    android:visibility="gone"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/directorNameTextView"
+                    tools:visibility="visible"/>
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/cast_recycler_view"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:clipToPadding="false"
+                    android:orientation="horizontal"
+                    android:paddingStart="8dp"
+                    android:paddingEnd="8dp"
+                    android:visibility="gone"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/castTitleTextView"
+                    tools:listitem="@layout/item_cast"
+                    tools:visibility="visible"/>
+
+                <TextView
+                    android:id="@+id/galleryTitleTextView"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="24dp"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginEnd="16dp"
+                    android:text="Galería de Arte"
+                    android:textColor="?attr/colorOnSurface"
+                    android:textSize="18sp"
+                    android:textStyle="bold"
+                    android:visibility="gone"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/cast_recycler_view"
+                    tools:visibility="visible"/>
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/gallery_recycler_view"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:clipToPadding="false"
+                    android:orientation="horizontal"
+                    android:paddingStart="8dp"
+                    android:paddingEnd="8dp"
+                    android:visibility="gone"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/galleryTitleTextView"
+                    tools:listitem="@layout/item_gallery_image"
+                    tools:visibility="visible"/>
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.core.widget.NestedScrollView>
-
-    <!-- 4. Póster flotante -->
-    <com.google.android.material.imageview.ShapeableImageView
-        android:id="@+id/posterImageView"
-        android:layout_width="120dp"
-        android:layout_height="180dp"
-        android:layout_marginStart="16dp"
-        android:elevation="8dp"
-        android:scaleType="centerCrop"
-        app:layout_constraintBottom_toBottomOf="@id/header_container"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/header_container"
-        app:shapeAppearanceOverlay="@style/ShapeAppearance.Material3.Corner.Large"
-        tools:src="@tools:sample/avatars" />
-
-</androidx.constraintlayout.widget.ConstraintLayout>
+</LinearLayout>
