@@ -13,6 +13,7 @@ import androidx.navigation.fragment.findNavController
 import com.example.movienow.data.model.Movie
 import com.example.movienow.databinding.FragmentSearchBinding
 import com.example.movienow.ui.home.MovieAdapter
+import com.example.movienow.util.GridSpacingItemDecoration
 
 class SearchFragment : Fragment() {
 
@@ -21,6 +22,8 @@ class SearchFragment : Fragment() {
 
     private val viewModel: SearchViewModel by viewModels()
     private lateinit var searchAdapter: MovieAdapter
+
+    private var hasShownWarningDialog = false
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -33,6 +36,11 @@ class SearchFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        if (!hasShownWarningDialog) {
+            WarningDialogFragment().show(childFragmentManager, "WarningDialog")
+            hasShownWarningDialog = true
+        }
+
         setupRecyclerView()
         setupSearch()
         observeViewModel()
@@ -43,6 +51,10 @@ class SearchFragment : Fragment() {
             navigateToDetail(movie)
         }
         binding.searchResultsRecyclerView.adapter = searchAdapter
+
+        // Aplicamos la decoración para un espaciado uniforme
+        val spacingInPixels = (32 * resources.displayMetrics.density).toInt() // Convertimos 32dp a píxeles
+        binding.searchResultsRecyclerView.addItemDecoration(GridSpacingItemDecoration(2, spacingInPixels, true))
     }
 
     private fun setupSearch() {
@@ -58,14 +70,13 @@ class SearchFragment : Fragment() {
 
         viewModel.isLoading.observe(viewLifecycleOwner) { isLoading ->
             binding.progressBar.visibility = if (isLoading) View.VISIBLE else View.GONE
-            // Ocultar el teclado cuando la carga termina
             if (!isLoading) {
                 hideKeyboard()
             }
         }
 
         viewModel.showNoResults.observe(viewLifecycleOwner) { show ->
-            binding.noResultsTextView.visibility = if (show) View.VISIBLE else View.GONE
+            binding.noResultsContainer.visibility = if (show) View.VISIBLE else View.GONE
         }
     }
 
@@ -74,7 +85,6 @@ class SearchFragment : Fragment() {
         findNavController().navigate(action)
     }
 
-    // --- Función para ocultar el teclado ---
     private fun hideKeyboard() {
         val imm = context?.getSystemService(Context.INPUT_METHOD_SERVICE) as? InputMethodManager
         imm?.hideSoftInputFromWindow(view?.windowToken, 0)

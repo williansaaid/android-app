@@ -15,7 +15,6 @@
     <color name="md_theme_onTertiary">#4A453E</color> <!-- Texto sobre el color de acento -->
     <color name="md_theme_onBackground">#1C1B1A</color> <!-- Texto sobre el fondo -->
     <color name="md_theme_onSurface">#1C1B1A</color> <!-- Texto sobre las superficies -->
-
     <color name="splash_background">#FDF8F3</color> <!-- Fondo crema para modo claro -->
 
     <!-- Paleta de colores para el Modo Oscuro -->

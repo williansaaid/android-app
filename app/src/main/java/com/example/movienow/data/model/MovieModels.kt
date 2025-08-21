@@ -4,34 +4,60 @@ import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
 import kotlinx.parcelize.Parcelize
 
-/**
- * Represents the API response for a list of movies.
- */
 data class MovieResponse(
     @SerializedName("results") val results: List<Movie>
 )
 
-/**
- * Represents a single Genre object.
- */
 @Parcelize
 data class Genre(
     @SerializedName("id") val id: Int,
     @SerializedName("name") val name: String
 ) : Parcelable
 
-/**
- * Represents a single Movie object.
- * We add @Parcelize to be able to pass this object between fragments.
- */
 @Parcelize
 data class Movie(
     @SerializedName("id") val id: Int,
     @SerializedName("title") val title: String,
     @SerializedName("overview") val overview: String,
     @SerializedName("poster_path") val posterPath: String?,
-    @SerializedName("backdrop_path") val backdropPath: String?, // For the detail screen background
+    @SerializedName("backdrop_path") val backdropPath: String?,
     @SerializedName("release_date") val releaseDate: String,
     @SerializedName("vote_average") val voteAverage: Double,
-    @SerializedName("genres") val genres: List<Genre>? // List of genres for the detail screen
+    @SerializedName("genres") val genres: List<Genre>?,
+    @SerializedName("tagline") val tagline: String?,
+    @SerializedName("runtime") val runtime: Int?
 ) : Parcelable
+
+data class VideoResponse(
+    @SerializedName("results") val results: List<Video>
+)
+
+data class Video(
+    @SerializedName("key") val key: String,
+    @SerializedName("site") val site: String,
+    @SerializedName("type") val type: String
+)
+
+data class CreditsResponse(
+    @SerializedName("cast") val cast: List<Cast>,
+    @SerializedName("crew") val crew: List<Crew>
+)
+
+data class Cast(
+    @SerializedName("name") val name: String,
+    @SerializedName("profile_path") val profilePath: String?,
+    @SerializedName("character") val character: String
+)
+
+data class Crew(
+    @SerializedName("name") val name: String,
+    @SerializedName("job") val job: String
+)
+
+data class ImageResponse(
+    @SerializedName("backdrops") val backdrops: List<ImageFile>
+)
+
+data class ImageFile(
+    @SerializedName("file_path") val filePath: String
+)
